@@ -115,8 +115,23 @@ else
 		if (!$mysqlConn->query("SELECT * FROM Users") === TRUE){
 			die("Table doesn't exists, please specify the command line option --create_table .");
 		}
+		//Inserting rows
+		$insertQuery = $mysqlConn->prepare("INSERT INTO Users (name, surname, email) VALUES (?, ?, ?)");
+		$name 		= ucfirst(trim($row[0]));
+		$surname 	= ucfirst(trim($row[1]));
+		$email 		= strtolower(trim($row[2]));
+		if (!preg_match("/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/", $email)) {
+			echo "Email : '" . $email . "' is not valid. So, this record with the mentioned email is not inserted to the table" , PHP_EOL;
+			continue;
+		}
+		else{
+			$insertQuery -> bind_param("sss", $name, $surname, $email);
+			$insertQuery -> execute();
+		}
 		
 	}
+	//close file
+	fclose($fileContent);
 	//Close MySQL Connection
 	CloseDBConnection($mysqlConn);
 }
