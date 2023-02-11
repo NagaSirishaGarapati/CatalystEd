@@ -74,12 +74,14 @@ function createTable($table, $conn)
 }
 
 /* Check the option is empty or null*/
-function isNullOrEmptyString($str){
-    return ($str === null || trim($str) === '');
+function isNullOrEmptyString($str)
+{
+	return ($str === null || trim($str) === '');
 }
 
 /* Check for valid email*/
-function isValidEmail($str){
+function isValidEmail($str)
+{
 	return $check = (preg_match("/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/", $str)) ? TRUE : FALSE;
 }
 
@@ -88,12 +90,12 @@ $options = getRequestOpts();
 
 //Get Help
 if (array_key_exists('help', $options)) {
-	$help = "--file [csv file name] (Required) - this is the name of the CSV to be parsed. If this option is not provided the script will die and show the message".PHP_EOL.
-	"--create_table (Table Name - Optional) - If table name is provided, the script will use the provided table name otherwise default table name 'Users' is used. This option will cause the MySQL table to be built (and no further action will be taken) - If table doesn't exist and if this option is not provided, the script will die and show the message.".PHP_EOL.
-	"--dry_run  (Boolean - No Value required) - this will be used with the --file directive in case we want to run the script but not insert into the DB. All other functions will be executed, but the database won't be altered".PHP_EOL.
-	"-u (MySQL username - Optional) - if this option is not provided by default it will use username 'root'".PHP_EOL.
-	"-p (MySQL password - Optional) - if this option is not provided by default it will use password ''".PHP_EOL.
-	"-h (MySQL host - Optional) - if this option is not provided by default it will use 'localhost'";
+	$help = "--file [csv file name] (Required) - this is the name of the CSV to be parsed. If this option is not provided the script will die and show the message" . PHP_EOL .
+		"--create_table (Table Name - Optional) - If table name is provided, the script will use the provided table name otherwise default table name 'Users' is used. This option will cause the MySQL table to be built (and no further action will be taken) - If table doesn't exist and if this option is not provided, the script will die and show the message." . PHP_EOL .
+		"--dry_run  (Boolean - No Value required) - this will be used with the --file directive in case we want to run the script but not insert into the DB. All other functions will be executed, but the database won't be altered" . PHP_EOL .
+		"-u (MySQL username - Optional) - if this option is not provided by default it will use username 'root'" . PHP_EOL .
+		"-p (MySQL password - Optional) - if this option is not provided by default it will use password ''" . PHP_EOL .
+		"-h (MySQL host - Optional) - if this option is not provided by default it will use 'localhost'";
 	echo $help;
 	die();
 }
@@ -122,8 +124,7 @@ if (!array_key_exists('file', $options)) {
 	//command line option --create_table exists :
 	if (array_key_exists('create_table', $options)) {
 		//create table
-		if(!isNullOrEmptyString($options['create_table']))
-		{
+		if (!isNullOrEmptyString($options['create_table'])) {
 			$tableName = $options['create_table'];
 		}
 		createTable($tableName, $mysqlConn);
@@ -153,9 +154,9 @@ if (!array_key_exists('file', $options)) {
 	}
 	//For DRY RUN
 	if (array_key_exists('dry_run', $options)) {
-		echo "Records are not inserted to the table. This is Dry Run",PHP_EOL;
+		echo "Records are not inserted to the table. This is Dry Run", PHP_EOL;
 	}
-	
+
 	//close file
 	fclose($fileContent);
 	//Close MySQL Connection
