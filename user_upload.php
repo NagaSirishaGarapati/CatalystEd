@@ -10,8 +10,6 @@
 //• -h – MySQL host
 //• --help – which will output the above list of directives with details.
 
-//$mysqlConn;
-
 /* opens Database connection */
 function OpenDBConnection($username, $password, $host)
 {
@@ -85,7 +83,6 @@ function IsNullOrEmptyString($str){
 
 
 $options = getRequestOpts();
-print_r($options);
 
 if (!array_key_exists('file', $options)) {
 	die("Please specify the file name to upload users using the command line option --file .");
@@ -130,17 +127,20 @@ if (!array_key_exists('file', $options)) {
 		$surname 	= ucfirst(trim($row[1]));
 		$email 		= strtolower(trim($row[2]));
 		if (!preg_match("/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/", $email)) {
-			echo "Email : '" . $email . "' is not valid. So, this record with the mentioned email is not inserted to the table", PHP_EOL;
+			echo "Email : '" . $email . "' is not valid. So, this record with the mentioned email will not be inserted to the table", PHP_EOL;
 			continue;
 		}
-
+		//Checking for dry run
 		if (!array_key_exists('dry_run', $options)) {
 			$insertQuery->bind_param("sss", $name, $surname, $email);
 			$insertQuery->execute();
-		} else {
-			echo "dry run";
 		}
 	}
+	//For DRY RUN
+	if (array_key_exists('dry_run', $options)) {
+		echo "Records are not inserted to the table. This is Dry Run",PHP_EOL;
+	}
+	
 	//close file
 	fclose($fileContent);
 	//Close MySQL Connection
