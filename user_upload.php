@@ -19,9 +19,6 @@ function OpenDBConnection($username, $password, $host)
 	} else {
 		return $mysqlConn;
 	}
-	echo '<p>Connection OK ' . $mysqlConn->host_info . '</p>';
-	echo '<p>Server ' . $mysqlConn->server_info . '</p>';
-	echo '<p>Initial charset: ' . $mysqlConn->character_set_name() . '</p>';
 }
 
 /* closes Database Connection */
@@ -77,8 +74,13 @@ function createTable($table, $conn)
 }
 
 /* Check the option is empty or null*/
-function IsNullOrEmptyString($str){
+function isNullOrEmptyString($str){
     return ($str === null || trim($str) === '');
+}
+
+/* Check for valid email*/
+function isValidEmail($str){
+	return $check = (preg_match("/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/", $str)) ? TRUE : FALSE;
 }
 
 
@@ -120,7 +122,7 @@ if (!array_key_exists('file', $options)) {
 	//command line option --create_table exists :
 	if (array_key_exists('create_table', $options)) {
 		//create table
-		if(!IsNullOrEmptyString($options['create_table']))
+		if(!isNullOrEmptyString($options['create_table']))
 		{
 			$tableName = $options['create_table'];
 		}
@@ -139,7 +141,7 @@ if (!array_key_exists('file', $options)) {
 		$name 		= ucfirst(trim($row[0]));
 		$surname 	= ucfirst(trim($row[1]));
 		$email 		= strtolower(trim($row[2]));
-		if (!preg_match("/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/", $email)) {
+		if (!isValidEmail($email)) {
 			echo "Email : '" . $email . "' is not valid. So, this record with the mentioned email will not be inserted to the table", PHP_EOL;
 			continue;
 		}
