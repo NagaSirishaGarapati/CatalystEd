@@ -44,7 +44,7 @@ Example command
 Example command
 
     ```
-    php user_upload.php --file users.csv --help
+    php user_upload.php --help
     ```
 
 
