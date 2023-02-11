@@ -84,6 +84,17 @@ function IsNullOrEmptyString($str){
 
 $options = getRequestOpts();
 
+if (array_key_exists('help', $options)) {
+	$help = "--file [csv file name] (Required) - this is the name of the CSV to be parsed. If this option is not provided the script will die and show the message".PHP_EOL.
+	"--create_table (Table Name - Optional) - If table name is provided, the script will use the provided table name otherwise default table name 'Users' is used. This option will cause the MySQL table to be built (and no further action will be taken) - If table doesn't exist and if this option is not provided, the script will die and show the message.".PHP_EOL.
+	"--dry_run  (Boolean - No Value required) - this will be used with the --file directive in case we want to run the script but not insert into the DB. All other functions will be executed, but the database won't be altered".PHP_EOL.
+	"-u (MySQL username - Optional) - if this option is not provided by default it will use username 'root'".PHP_EOL.
+	"-p (MySQL password - Optional) - if this option is not provided by default it will use password ''".PHP_EOL.
+	"-h (MySQL host - Optional) - if this option is not provided by default it will use 'localhost'";
+	echo $help;
+	die();
+}
+
 if (!array_key_exists('file', $options)) {
 	die("Please specify the file name to upload users using the command line option --file .");
 } else {
